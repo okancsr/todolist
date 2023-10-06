@@ -32,18 +32,16 @@ const defaultItems = [
   new Item({ name: 'Hit the + button to add a new item' }),
   new Item({ name: '<-- Hit this to delete an item' })
 ];
-/*
+
 async function getFoundItems() {
   const foundItems = await Item.find({});
-  console.log(foundItems);
-  return foundItems; 
+  return foundItems;
 }
-*/
+
 app.get("/", async function(req, res) {
   try {
-    //const foundItems = await getFoundItems();
-    const foundItems = await Item.find({});
-    //console.log(getFoundItems());
+    const foundItems = await getFoundItems();
+
     // Check if the database is empty
     if (foundItems.length === 0) {
       await Item.insertMany(defaultItems);
@@ -56,9 +54,6 @@ app.get("/", async function(req, res) {
   }
 });
 
-app.get("/about", function(req, res){
-  res.render("about");
-});
 
 app.get("/:customListName", async function (req, res) {
   const customListName = _.capitalize(req.params.customListName);
@@ -155,7 +150,9 @@ app.post("/delete", async (req, res) => {
   res.render("list", {listTitle: "Work List", newListItems: workItems});
 });
 
-
+app.get("/about", function(req, res){
+  res.render("about");
+});
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");
